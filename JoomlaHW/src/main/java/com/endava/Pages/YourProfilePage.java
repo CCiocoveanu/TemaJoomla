@@ -1,7 +1,5 @@
 package com.endava.Pages;
 
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,12 +32,18 @@ public class YourProfilePage extends MainPageLoggedIn{
     @FindBy(css = "#jform_params_timezone_chzn .chzn-search>input")
     private WebElement timeZoneInputField;
 
+    @FindBy(css = ".alert.alert-success .alert-message")
+    private WebElement successMessage;
+
+    public static String successMessageText = null;
 
     public YourProfilePage(WebDriver webDriver) {
+        super(webDriver);
         this.webDriver = webDriver;
     }
 
     public void changeYourSettings(String name, String email, String timeZone){
+        successMessageText = null;
         nameField.clear();
         nameField.sendKeys(name);
         emailField.clear();
@@ -51,10 +55,9 @@ public class YourProfilePage extends MainPageLoggedIn{
         timeZoneInputField.sendKeys(Keys.ENTER);
         submitButton.click();
 
-        WebElement successMessage = webDriver.findElement(By.cssSelector(".alert.alert-success .alert-message"));
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
         wait.until(ExpectedConditions.visibilityOf(successMessage));
 
-        Assert.assertEquals("Profile saved.",successMessage.getText());
+        successMessageText = successMessage.getText();
     }
 }

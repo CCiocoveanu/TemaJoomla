@@ -4,11 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
 
 /**
  * Created by cciocoveanu
@@ -23,17 +20,8 @@ public class MainPageLoggedIn extends MainPage{
     @FindBy(css = "input[value='Log out']")
     private WebElement logOutButton;
 
-//    @FindBy(xpath = ".//div[contains(@class,'well _menu jmoddiv jmodinside')]/ul/li")
-//    private List<WebElement> menuPagesList;
-
-
-
     public MainPageLoggedIn(WebDriver webDriver) {
         this.webDriver = webDriver;
-
-    }
-
-    public MainPageLoggedIn() {
     }
 
     public String getLoginGreeting(){
@@ -47,8 +35,6 @@ public class MainPageLoggedIn extends MainPage{
     }
 
     public void goToPage(String pageName){
-//        WebDriverWait wait = new WebDriverWait(webDriver, 4);
-//        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(".//div[contains(@class,'well _menu jmoddiv jmodinside')]/ul/li")));
         int number;
         switch (pageName){
             case "Your Profile":
@@ -72,5 +58,4 @@ public class MainPageLoggedIn extends MainPage{
 
         webDriver.findElement(By.cssSelector("li[class='item-10"+number+"']")).click();
     }
-
 }

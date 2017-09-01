@@ -1,17 +1,12 @@
 package com.endava.Pages;
 
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Random;
-
-import static java.lang.Math.random;
 
 /**
  * Created by cciocoveanu
@@ -35,11 +30,18 @@ public class TemplateSettingsPage extends MainPageLoggedIn {
     @FindBy(xpath = "//div[@class='btn-toolbar']/div[@class='btn-group'][1]/button")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//div[@class='alert alert-success']//div[@class='alert-message']")
+    private WebElement successMessage;
+
+    public static String successMessageText = null;
+
     public TemplateSettingsPage(WebDriver webDriver) {
+        super(webDriver);
         this.webDriver = webDriver;
     }
 
     public void editTemplateSettings(String templateColorInput, String backgroundColorInput, String title, String description){
+        successMessageText = null;
         if(!templateColor.getAttribute("value").equals(templateColorInput)) {
             templateColor.clear();
             templateColor.sendKeys(templateColorInput);
@@ -54,10 +56,10 @@ public class TemplateSettingsPage extends MainPageLoggedIn {
         descriptionField.sendKeys(description);
         saveButton.click();
 
-        WebElement successMessage = webDriver.findElement(By.xpath("//div[@class='alert alert-success']//div[@class='alert-message']"));
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
         wait.until(ExpectedConditions.visibilityOf(successMessage));
-        Assert.assertEquals("Configuration saved.",successMessage.getText());
+
+        successMessageText = successMessage.getText();
     }
 
     private String getRandomColor(){
@@ -68,16 +70,17 @@ public class TemplateSettingsPage extends MainPageLoggedIn {
     }
 
     public void setRandomColors(){
+        successMessageText = null;
         templateColor.clear();
         templateColor.sendKeys(getRandomColor());
         backgroundColor.clear();
         backgroundColor.sendKeys(getRandomColor());
         saveButton.click();
 
-        WebElement successMessage = webDriver.findElement(By.xpath("//div[@class='alert alert-success']//div[@class='alert-message']"));
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
         wait.until(ExpectedConditions.visibilityOf(successMessage));
-        Assert.assertEquals("Configuration saved.",successMessage.getText());
+
+        successMessageText = successMessage.getText();
     }
 }
 

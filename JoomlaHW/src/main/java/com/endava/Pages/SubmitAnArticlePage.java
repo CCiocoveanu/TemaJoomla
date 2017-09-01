@@ -26,7 +26,15 @@ public class SubmitAnArticlePage extends MainPageLoggedIn {
     @FindBy(css = "#mceu_54>button")
     private WebElement addImageButton;
 
+    private static By contentField = By.id("tinymce");
+    private static By addImageIframe = By.xpath("//div[contains(@id,'-body')]/iframe");
+    private static By imageURLField = By.cssSelector("#f_url");
+    private static By allignDropdown = By.cssSelector("#f_align_chzn .chzn-single>div>b");
+    private static By selectCenterAllign = By.cssSelector("li[data-option-array-index='2']");
+    private static By submitImageButton = By.cssSelector(".btn.btn-success.button-save-selected");
+
     public SubmitAnArticlePage(WebDriver webDriver) {
+        super(webDriver);
         this.webDriver = webDriver;
     }
 
@@ -34,19 +42,19 @@ public class SubmitAnArticlePage extends MainPageLoggedIn {
         articleTitleField.clear();
         articleTitleField.sendKeys(title);
         webDriver.switchTo().frame(articleFrame);
-        webDriver.findElement(By.id("tinymce")).sendKeys(content);
+        webDriver.findElement(contentField).sendKeys(content);
         webDriver.switchTo().defaultContent();
 
         addImageButton.click();
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div[contains(@id,'-body')]/iframe")));
-        webDriver.switchTo().frame(webDriver.findElement(By.xpath(".//div[contains(@id,'-body')]/iframe")));
-        webDriver.findElement(By.cssSelector("#f_url")).sendKeys(imageURL);
-        webDriver.findElement(By.cssSelector("#f_align_chzn .chzn-single>div>b")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(addImageIframe));
+        webDriver.switchTo().frame(webDriver.findElement(addImageIframe));
+        webDriver.findElement(imageURLField).sendKeys(imageURL);
+        webDriver.findElement(allignDropdown).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("li[data-option-array-index='2']")));
-        webDriver.findElement(By.cssSelector("li[data-option-array-index='2']")).click();
-        webDriver.findElement(By.cssSelector(".btn.btn-success.button-save-selected")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(selectCenterAllign));
+        webDriver.findElement(selectCenterAllign).click();
+        webDriver.findElement(submitImageButton).click();
         webDriver.switchTo().defaultContent();
 
         saveArticleButton.click();
@@ -55,7 +63,7 @@ public class SubmitAnArticlePage extends MainPageLoggedIn {
         articleTitleField.clear();
         articleTitleField.sendKeys(title);
         webDriver.switchTo().frame(articleFrame);
-        webDriver.findElement(By.id("tinymce")).sendKeys(content);
+        webDriver.findElement(contentField).sendKeys(content);
         webDriver.switchTo().defaultContent();
         saveArticleButton.click();
     }

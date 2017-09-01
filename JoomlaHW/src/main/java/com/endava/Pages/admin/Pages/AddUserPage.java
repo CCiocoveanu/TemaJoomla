@@ -41,5 +41,4 @@ public class AddUserPage extends GenericAdminPage{
        emailField.sendKeys(uEmail);
        saveAndCloseButton.click();
     }
-
 }

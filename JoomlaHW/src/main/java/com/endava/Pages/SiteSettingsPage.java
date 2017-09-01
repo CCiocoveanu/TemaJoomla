@@ -34,12 +34,15 @@ public class SiteSettingsPage extends MainPageLoggedIn {
     @FindBy(xpath = "//div[@id='page-site']//div[@class='controls']/textarea")
     private List<WebElement> metadataSettingsList;
 
-//    @FindBy(xpath = "//div[@id='jform_list_limit_chzn']//ul[@class='chzn-results']/li")
-//    private List<WebElement> defaultListLimitList;
+    @FindBy(xpath = "//div[@class='alert alert-success']//div[@class='alert-message']")
+    private WebElement successMessage;
 
+    private static By accessLevelSelector = By.xpath("//div[@id='jform_access_chzn']//ul/li");
 
+    private static By defaultListLimitSelector = By.xpath("//div[@id='jform_list_limit_chzn']//ul[@class='chzn-results']/li");
 
     public SiteSettingsPage(WebDriver webDriver) {
+        super(webDriver);
         this.webDriver = webDriver;
     }
 
@@ -52,7 +55,7 @@ public class SiteSettingsPage extends MainPageLoggedIn {
         siteNameField.sendKeys(newName);
         siteNameField.sendKeys(Keys.ENTER);
         defaultAccessLevelDropdown.click();
-        List<WebElement> accessLevelList = webDriver.findElements(By.xpath("//div[@id='jform_access_chzn']//ul/li"));
+        List<WebElement> accessLevelList = webDriver.findElements(accessLevelSelector);
         switch (accessLevel){
             case "Public":
                 accessLevelList.get(0).click();
@@ -73,9 +76,8 @@ public class SiteSettingsPage extends MainPageLoggedIn {
                 throw new IllegalArgumentException("Invalid access level: " + accessLevel);
         }
 
-
         defaultListLimitDropdown.click();
-        List<WebElement> defaultListLimitList = webDriver.findElements(By.xpath("//div[@id='jform_list_limit_chzn']//ul[@class='chzn-results']/li"));
+        List<WebElement> defaultListLimitList = webDriver.findElements(defaultListLimitSelector);
         for(WebElement element : defaultListLimitList){
             if(element.getText().equals(listLimit.toString())) {
                 element.click();
@@ -91,7 +93,6 @@ public class SiteSettingsPage extends MainPageLoggedIn {
 
         saveSettingsButton.click();
 
-        WebElement successMessage = webDriver.findElement(By.xpath("//div[@class='alert alert-success']//div[@class='alert-message']"));
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
         wait.until(ExpectedConditions.visibilityOf(successMessage));
         Assert.assertEquals("Configuration saved.",successMessage.getText());
@@ -103,7 +104,7 @@ public class SiteSettingsPage extends MainPageLoggedIn {
         siteNameField.sendKeys(Keys.ENTER);
         defaultListLimitDropdown.click();
 
-        List<WebElement> defaultListLimitList = webDriver.findElements(By.xpath("//div[@id='jform_list_limit_chzn']//ul[@class='chzn-results']/li"));
+        List<WebElement> defaultListLimitList = webDriver.findElements(defaultListLimitSelector);
         defaultListLimitList.get(6).click();
 
         metadataSettingsList.get(0).clear();
@@ -115,7 +116,6 @@ public class SiteSettingsPage extends MainPageLoggedIn {
 
         saveSettingsButton.click();
 
-        WebElement successMessage = webDriver.findElement(By.xpath("//div[@class='alert alert-success']//div[@class='alert-message']"));
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
         wait.until(ExpectedConditions.visibilityOf(successMessage));
         Assert.assertEquals("Configuration saved.",successMessage.getText());

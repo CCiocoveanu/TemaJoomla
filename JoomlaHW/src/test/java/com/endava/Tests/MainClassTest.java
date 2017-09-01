@@ -5,13 +5,7 @@ import com.endava.Pages.admin.Pages.AddUserPage;
 import com.endava.Pages.admin.Pages.GenericAdminPage;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
-
-import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  * Created by cciocoveanu
@@ -21,7 +15,7 @@ public class MainClassTest extends MainTest{
     @Test
     public void siteSettingsTest() throws InterruptedException {
         // ---  Main page ---
-        mainPage.logIn("cciocoveanu","hidden");
+        mainPage.logIn(readFromProperties("name", "src/test/resources/login.properties"), readFromProperties("password", "src/test/resources/login.properties"));
 
         // --- Main page while logged in ---
         mainPageLoggedIn = PageFactory.initElements(webDriver, MainPageLoggedIn.class);
@@ -45,7 +39,7 @@ public class MainClassTest extends MainTest{
     @Test
     public void submitArticleTest(){
         // ---  Main page ---
-        mainPage.logIn("cciocoveanu","hidden");
+        mainPage.logIn(readFromProperties("name", "src/test/resources/login.properties"), readFromProperties("password", "src/test/resources/login.properties"));
 
         // --- Main page while logged in ---
         mainPageLoggedIn = PageFactory.initElements(webDriver, MainPageLoggedIn.class);
@@ -68,7 +62,7 @@ public class MainClassTest extends MainTest{
     public void yourProfileTest(){
         // ---  Main page ---
         Assert.assertEquals("cciocoveanu's Site!", mainPage.getSiteTitle());
-        mainPage.logIn("cciocoveanu","hidden");
+        mainPage.logIn(readFromProperties("name", "src/test/resources/login.properties"), readFromProperties("password", "src/test/resources/login.properties"));
 
         // --- Main page while logged in ---
         mainPageLoggedIn = PageFactory.initElements(webDriver, MainPageLoggedIn.class);
@@ -78,15 +72,16 @@ public class MainClassTest extends MainTest{
         // --- Your Profile ---
         yourProfilePage = PageFactory.initElements(webDriver, YourProfilePage.class);
         yourProfilePage.changeYourSettings("Constantin Ciocoveanu", "ciocoveanu.constantin@gmail.com", "Bucharest");
+        Assert.assertEquals("Profile saved.",YourProfilePage.successMessageText);
 
         yourProfilePage.goToHomePage();
         mainPageLoggedIn.logOut();
     }
 
     @Test
-    public void templateSettingsTest(){
+    public void templateSettingsTest() {
         // ---  Main page ---
-        mainPage.logIn("cciocoveanu","hidden");
+        mainPage.logIn(readFromProperties("name", "src/test/resources/login.properties"), readFromProperties("password", "src/test/resources/login.properties"));
 
         // --- Main page while logged in ---
         mainPageLoggedIn = PageFactory.initElements(webDriver, MainPageLoggedIn.class);
@@ -95,16 +90,18 @@ public class MainClassTest extends MainTest{
         // --- Template Settings ---
         templateSettingsPage = PageFactory.initElements(webDriver, TemplateSettingsPage.class);
         templateSettingsPage.editTemplateSettings("#008000", "#93999c", "Best Site EU",randomString(50));
+        Assert.assertEquals("Configuration saved.", TemplateSettingsPage.successMessageText);
         templateSettingsPage.setRandomColors();
+        Assert.assertEquals("Configuration saved.", TemplateSettingsPage.successMessageText);
 
         templateSettingsPage.goToHomePage();
         mainPageLoggedIn.logOut();
     }
 
     @Test
-    public void createNewUserTest() throws InterruptedException {
+    public void createNewUserTest() {
         // ---  Main page ---
-        mainPage.logIn("cciocoveanu","hidden");
+        mainPage.logIn(readFromProperties("name", "src/test/resources/login.properties"), readFromProperties("password", "src/test/resources/login.properties"));
 
         // --- Main page while logged in ---
         mainPageLoggedIn = PageFactory.initElements(webDriver, MainPageLoggedIn.class);
@@ -112,15 +109,14 @@ public class MainClassTest extends MainTest{
 
         // --- Site Administrator ---
         siteAdminPage = PageFactory.initElements(webDriver,SiteAdminPage.class);
-        siteAdminPage.login("cciocoveanu","hidden","English");
+        siteAdminPage.login(readFromProperties("name", "src/test/resources/login.properties"), readFromProperties("password", "src/test/resources/login.properties"), readFromProperties("language", "src/test/resources/login.properties"));
 
         genericAdminPage = PageFactory.initElements(webDriver, GenericAdminPage.class);
         genericAdminPage.goToAddUserPage();
 
-
         // --- Add User ---
         addUserPage = PageFactory.initElements(webDriver, AddUserPage.class);
-        addUserPage.addNewUser(randomString(20),"cciocovaenu"+randomString(4), "hidden", "ciocoveanu.constantin"+randomString(4)+"@gmail.com");
+        addUserPage.addNewUser(randomString(20),readFromProperties("name", "src/test/resources/login.properties")+randomString(4), readFromProperties("password", "src/test/resources/login.properties"), "ciocoveanu.constantin"+randomString(4)+"@gmail.com");
         addUserPage.logout();
 
         // --- Back to Site Administrator ---

@@ -28,26 +28,25 @@ public class GenericAdminPage {
     @FindBy(xpath = "//ul[contains(@class,'pull-right')]//li[@class='dropdown']/a")
     private WebElement userMenuDropdown;
 
+    private By addUserButtonSelector = By.xpath("//ul[@id='nav-empty']/li/a");
+
+    private By logoutButtonSelector = By.xpath("//li[contains(@class, 'open')]//ul/li[5]/a");
+
     public GenericAdminPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
-
 
     public void goToAddUserPage() {
         usersButton.click();
         Actions builder = new Actions(webDriver);
         builder.moveToElement(usersDropdownList.get(0)).perform();
         WebDriverWait wait = new WebDriverWait(webDriver, 4);
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//ul[@id='nav-empty']/li/a")));
-        webDriver.findElement(By.xpath("//ul[@id='nav-empty']/li/a")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(addUserButtonSelector));
+        webDriver.findElement(addUserButtonSelector).click();
     }
 
     public void logout(){
         userMenuDropdown.click();
-
-        webDriver.findElement(By.xpath("//li[contains(@class, 'open')]//ul/li[5]/a")).click();
+        webDriver.findElement(logoutButtonSelector).click();
     }
-
 }
-//ul[@id='nav-empty']/li/a
-//ul[@id='nav-empty']/li/a

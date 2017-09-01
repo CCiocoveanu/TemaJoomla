@@ -33,6 +33,8 @@ public class SiteAdminPage {
     @FindBy(xpath = "//div[@class='controls']//button")
     private WebElement loginButton;
 
+    private static By languageSelector = By.xpath("//div[@class='chzn-drop']/ul/li");
+
     public SiteAdminPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
@@ -44,7 +46,7 @@ public class SiteAdminPage {
         passwordField.sendKeys(password);
 
         languageDropdown.click();
-        List<WebElement> languageList = webDriver.findElements(By.xpath("//div[@class='chzn-drop']/ul/li"));
+        List<WebElement> languageList = webDriver.findElements(languageSelector);
         for (WebElement element : languageList){
             if(element.getText().contains(language)) element.click();
         }
